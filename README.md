@@ -1,17 +1,53 @@
-# React + Vite
+# School Canteen Web App 🍽️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple **School Canteen Management System** built with **React**, **Tailwind CSS**, and **localStorage**.  
+This app allows you to manage snacks, students, and orders in a digital canteen environment.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Snack Management**
+  - View all available snacks with prices and order counts.
+  - Snack icons for easy recognition.
+  - "Order Now" button to place orders.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Student Management**
+  - Add new students with unique referral codes.
+  - Track total spending of each student.
+  - View detailed order history for each student.
 
-## Expanding the ESLint configuration
+- **Order System**
+  - Place orders for students with selectable quantity.
+  - Orders update snack popularity count and total student spending.
+  - Orders stored in `localStorage` (no backend required).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# school-canteen-task
+- **Responsive UI**
+  - Clean, modern, and mobile-friendly interface using Tailwind CSS.
+  - Smooth transitions, hover effects, and interactive modals.
+
+---
+
+## Libraries / Tools Used
+
+- **React** – Frontend library for building UI components.
+- **Tailwind CSS** – Styling and responsive layout.
+- **React Router DOM** – Page routing.
+- **React Hook Form** – Form handling for students and orders.
+- **Lucide React** – Icons for snacks, buttons, and UI elements.
+- **localStorage** – Mock backend for storing students, snacks, and orders.
+
+---
+
+## Mock Data Approach
+
+- Snacks and students are stored in `localStorage` to simulate a backend.
+- On first load, default snack data is initialized:
+
+```js
+let snacks = [
+  { id: 1, name: "Samosa", price: 10, ordersCount: 0 },
+  { id: 2, name: "Sandwich", price: 30, ordersCount: 0 },
+  ...
+  { id: 16, name: "Cheese Toast", price: 25, ordersCount: 0 },
+];
