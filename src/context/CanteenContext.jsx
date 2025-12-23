@@ -3,24 +3,49 @@ import * as api from "../api/api";
 
 const CanteenContext = createContext();
 
+function getLocalData(key, defaultValue) {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : defaultValue;
+}
+
+function setLocalData(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
 export const CanteenProvider = ({ children }) => {
-  const [snacks, setSnacks] = useState([]);
-  const [students, setStudents] = useState([]);
+  const [snacks, setSnacks] = useState(() =>
+    getLocalData("snacks", [])
+  );
+
+  const [students, setStudents] = useState(() =>
+    getLocalData("students", [])
+  );
 
   useEffect(() => {
     loadData();
   }, []);
 
+  // ✅ ONLY LOAD SNACKS FROM API
   async function loadData() {
-    const snackList = await api.getSnacks();
-    const studentList = await api.getStudents();
-    setSnacks(snackList);
-    setStudents(studentList);
+    if (snacks.length === 0) {
+      const snackList = await api.getSnacks();
+      setSnacks(snackList);
+    }
   }
+
+  // save snacks to localStorage
+  useEffect(() => {
+    setLocalData("snacks", snacks);
+  }, [snacks]);
+
+  // save students to localStorage
+  useEffect(() => {
+    setLocalData("students", students);
+  }, [students]);
 
   async function addStudent(name) {
     const newStudent = await api.createStudent(name);
-    setStudents([...students, newStudent]);
+    setStudents(prev => [...prev, newStudent]);
   }
 
   async function orderSnack(data) {
