@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCanteen } from "../context/CanteenContext";
+import { X, ShoppingBag, Hash, Receipt } from "lucide-react";
 
 const StudentDetail = () => {
   const { id } = useParams();
@@ -25,72 +26,122 @@ const StudentDetail = () => {
   }
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">{student.name}</h2>
-      <p className="text-gray-700 mb-2">Referral Code: {student.referralCode}</p>
-      <p className="text-gray-700 mb-4">Total Spent: ₹{student.totalSpent}</p>
-
-      <button
-        onClick={() => setShowOrderModal(true)}
-        className="mb-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Place New Order
-      </button>
-
-      <h3 className="text-xl font-semibold mb-2">Order History</h3>
-      <div className="space-y-2">
-        {student.orders.map((o, i) => (
-          <div key={i} className="bg-white shadow-md rounded-lg p-4 border">
-            <p className="text-gray-700">
-              {o.snackName} × {o.quantity} = ₹{o.amount}
-            </p>
+    <div>
+      <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">{student.name}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center space-x-2">
+            <Hash className="h-5 w-5 text-gray-500" />
+            <span className="text-gray-700">Referral Code: <span className="font-semibold">{student.referralCode}</span></span>
           </div>
-        ))}
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-700">Total Spent: <span className="font-semibold text-green-600">₹{student.totalSpent}</span></span>
+          </div>
+        </div>
+        <button
+          onClick={() => setShowOrderModal(true)}
+          className="mt-6 flex items-center space-x-2 bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium"
+        >
+          <ShoppingBag className="h-5 w-5" />
+          <span>Place New Order</span>
+        </button>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center space-x-2 mb-6">
+          <Receipt className="h-6 w-6 text-gray-600" />
+          <h3 className="text-2xl font-semibold text-gray-900">Order History</h3>
+        </div>
+
+        {student.orders.length === 0 ? (
+          <p className="text-gray-500 text-center py-8">No orders yet</p>
+        ) : (
+          <div className="space-y-4">
+            {student.orders.map((o, i) => (
+              <div key={i} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="font-semibold text-gray-900">{o.snackName}</p>
+                    <p className="text-gray-600">Quantity: {o.quantity}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-green-600">₹{o.amount}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {showOrderModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h3 className="text-lg font-semibold mb-4">Place Order for {student.name}</h3>
-            <form onSubmit={handleSubmit(submitOrder)} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Snack</label>
-                <select {...register("snackId")} className="w-full p-2 border rounded">
-                  {snacks.map(s => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} - ₹{s.price}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Quantity</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="5"
-                  {...register("quantity")}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-
-              <div className="flex justify-end space-x-2">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+            <div className="bg-indigo-600 text-white p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <ShoppingBag className="h-6 w-6" />
+                  <h3 className="text-xl font-semibold">Place Order for {student.name}</h3>
+                </div>
                 <button
-                  type="button"
                   onClick={() => setShowOrderModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                  className="text-white hover:text-gray-200 transition-colors"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Place Order
+                  <X className="h-6 w-6" />
                 </button>
               </div>
-            </form>
+            </div>
+
+            <div className="p-6">
+              <form onSubmit={handleSubmit(submitOrder)} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Snack
+                  </label>
+                  <select
+                    {...register("snackId")}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                  >
+                    <option value="">Choose a snack...</option>
+                    {snacks.map(s => (
+                      <option key={s.id} value={s.id}>
+                        {s.name} - ₹{s.price}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Quantity (1-5)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="5"
+                    {...register("quantity")}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                    placeholder="Enter quantity"
+                  />
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowOrderModal(false)}
+                    className="flex-1 py-3 px-4 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                  >
+                    Place Order
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

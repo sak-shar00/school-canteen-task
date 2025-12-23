@@ -7,6 +7,14 @@ let snacks = [
   { id: 6, name: "Cold Drink", price: 20, ordersCount: 0 },
   { id: 7, name: "Ice Cream", price: 35, ordersCount: 0 },
   { id: 8, name: "Pasta", price: 45, ordersCount: 0 },
+  { id: 9, name: "Chicken Nuggets", price: 55, ordersCount: 0 },
+  { id: 10, name: "Hot Dog", price: 40, ordersCount: 0 },
+  { id: 11, name: "Momos", price: 35, ordersCount: 0 },
+  { id: 12, name: "Spring Roll", price: 28, ordersCount: 0 },
+  { id: 13, name: "Donut", price: 22, ordersCount: 0 },
+  { id: 14, name: "Milkshake", price: 45, ordersCount: 0 },
+  { id: 15, name: "Fruit Salad", price: 30, ordersCount: 0 },
+  { id: 16, name: "Cheese Toast", price: 25, ordersCount: 0 },
 ];
 
 let students = [];

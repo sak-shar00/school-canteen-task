@@ -1,29 +1,38 @@
 import { useForm } from "react-hook-form";
 import { useCanteen } from "../context/CanteenContext";
+import { UserPlus } from "lucide-react";
 
 const CreateStudentForm = () => {
   const { register, handleSubmit, reset } = useForm();
   const { addStudent } = useCanteen();
 
-  async function submit(data) {
+  async function submit(data, event) {
+    event.preventDefault();
     await addStudent(data.name);
     reset();
   }
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 border mb-6">
-      <h3 className="text-lg font-semibold mb-4">Add New Student</h3>
-      <form onSubmit={handleSubmit(submit)} className="flex space-x-2">
-        <input
-          {...register("name", { required: true })}
-          placeholder="Student name"
-          className="flex-1 p-2 border rounded"
-        />
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 mb-8">
+      <div className="flex items-center space-x-2 mb-4">
+        <UserPlus className="h-6 w-6 text-indigo-600" />
+        <h3 className="text-xl font-semibold text-gray-900">Add New Student</h3>
+      </div>
+
+      <form onSubmit={handleSubmit(submit)} className="flex space-x-4">
+        <div className="flex-1">
+          <input
+            {...register("name", { required: true })}
+            placeholder="Enter student name"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+          />
+        </div>
         <button
           type="submit"
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="flex items-center space-x-2 bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors duration-200 font-medium"
         >
-          Add Student
+          <UserPlus className="h-5 w-5" />
+          <span>Add Student</span>
         </button>
       </form>
     </div>
